@@ -70,6 +70,14 @@ export default function barChart(parent, chartGroup) {
 
   _chart._numberOfBars = null
   let _barWidth
+  
+  let _numberOfBars = null
+  
+  _chart.numberOfBars = function(numberOfBars) {
+    _numberOfBars = numberOfBars;
+
+    return _chart;
+  }
 
   override(_chart, "rescale", () => {
     _chart._rescale()
@@ -357,6 +365,14 @@ export default function barChart(parent, chartGroup) {
   }
 
   function calculateBarWidth() {
+    if (_numberOfBars) {
+      _barWidth = Math.floor(
+        _chart.xAxisLength() / (1 + _chart.barPadding()) / _numberOfBars
+      )
+
+      return;
+    }
+    
     let numberOfBars
     const binParams = _chart.group().binParams()[0]
 
